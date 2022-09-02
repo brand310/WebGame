@@ -11,7 +11,8 @@ const state = {
     move_left : false,
     move_right : false,
     lasers: [],
-    spaceship_width : 50
+    spaceship_width : 50,
+    cooldown : 0,
 }
 
 
@@ -54,11 +55,15 @@ function createPlayer($container) {
         state.x_pos -= 3;
     } if (state.move_right) {
         state.x_pos += 3;
-    } if (state.shoot){
+    } if (state.shoot && state.cooldown == 0){
       createLaser ($container, state.x_pos - state.spaceship_width / 2, state.y_pos);
+      state.cooldown = 30;
     }
     const $player = document.querySelector('.player');
     setPosition($player, bound (state.x_pos), state.y_pos)
+    if (state.cooldown > 0 ) {
+      state.cooldown -= 0.5;
+    }
   }
 
   //Player laser
